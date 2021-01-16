@@ -1,0 +1,77 @@
+#! /bin/bash
+#LOAD AT BOOT TO KEEP UPDATED
+
+##################################
+#Scans folder supplied and stores everything in it as non operational names
+#whilst also expanding to any folders within to show whole folder structure
+##################################
+
+fileLocation=~/.fluxbox/folders_menu.txt
+
+FolderScanner(){
+
+#Find the working directory
+	currentDirectory=$1
+	declare -a fileList=($(ls $currentDirectory))
+	declare -a folderList=($(ls -d $currentDirectory/*/ | awk -F "$currentDirectory/" '{print $2}' | awk -F "/" '{print $1}'))
+	directoryCheck=false
+
+#Add option to open folder to edit in terminal
+	echo "[exec] (Open) {guake --show -n Docs -e 'cd $currentDirectory && echo "files in $currentDirectory:" && ls $currentDirectory'}" >> ~/.fluxbox/folders_menu.txt
+	echo "[separator]" >> ~/.fluxbox/folders_menu.txt
+
+	for file in ${fileList[@]}
+	do
+		echo $file
+		for folder in ${folderList[@]}
+		do
+			#check which files are directories
+			if [[ $file == $folder ]]
+			then
+			echo "FolderMatch"
+			directoryCheck=true
+			break
+			else
+			echo "noMatch"
+			directoryCheck=false
+			fi
+
+		echo $directoryCheck
+		done
+
+		#opens directories as new submenus
+		if [ $directoryCheck = true ]
+		then
+		echo "[submenu] (${file})" >> ~/.fluxbox/folders_menu.txt
+		newFolder="$currentDirectory/$file"
+		FolderScanner $newFolder
+		echo "[end]" >> ~/.fluxbox/folders_menu.txt
+		else
+		echo "[nop] (${file})" >> ~/.fluxbox/folders_menu.txt
+		fi
+	done
+
+	if [ -z $fileList ]
+	then
+	echo "[nop] (No Files)" >> ~/.fluxbox/folders_menu.txt
+        fi
+}
+
+
+##############################
+#set up main files to search in
+##############################
+
+echo "[submenu] (Files) {}" > ~/.fluxbox/folders_menu.txt
+echo "[exec] (Update) {guake -e '~/.fluxbox/DisplayFiles &'}" >> ~/.fluxbox/folders_menu.txt
+echo "[submenu] (Documents) {}" >> ~/.fluxbox/folders_menu.txt
+
+FolderScanner ~/Documents
+
+echo "[end]" >> ~/.fluxbox/folders_menu.txt
+echo "[submenu] (Downloads)" {} >> ~/.fluxbox/folders_menu.txt
+
+FolderScanner ~/Downloads
+
+echo "[end]" >> ~/.fluxbox/folders_menu.txt
+echo "[end]" >> ~/.fluxbox/folders_menu.txt

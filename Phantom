@@ -1,0 +1,82 @@
+toolbar:                        flat 
+toolbar.color:                  #141119
+toolbar.button:                 parentrelative
+toolbar.button.picColor:        grey85
+toolbar.button.pressed:         flat 
+toolbar.button.pressed.color:   #141119
+toolbar.label:                  parentrelative
+toolbar.label.textColor:        #00FF00
+toolbar.windowLabel:            parentrelative
+toolbar.windowLabel.textColor:  #00FF00
+toolbar.clock:                  parentrelative
+toolbar.clock.textColor:        #00FF00
+toolbar.justify:                left
+toolbar.font:                   monospace-regular-10
+toolbar.iconbar.unfocused.textColor: #f3f3f3
+toolbar.iconbar.focused.textColor: #00FF00
+
+menu.title:                     flat 
+menu.title.color:               #141119
+menu.title.textColor:           #00FF00
+menu.title.font:                monospace-regular-10
+menu.title.justify:             rightleft
+
+menu.frame:                     flat 
+menu.frame.color:               #141119
+menu.frame.textColor:           #f3f3f3
+menu.frame.disableColor:        #f3f3f3
+menu.frame.font:                monospace-regular-10
+menu.frame.justify:             left
+
+menu.bullet.position:           right
+menu.bullet:                    triangle
+
+menu.hilite:                    flat 
+menu.hilite.color:              #00FF00
+menu.hilite.textColor:          black
+
+window.title.focus:             flat 
+window.title.focus.color:       #141119
+window.title.unfocus:           flat
+window.title.unfocus.color:     #141119
+
+window.label.focus:             parentrelative
+window.label.focus.textColor:   #00FF00
+window.label.unfocus:           parentrelative
+window.label.unfocus.textColor: #f3f3f3
+
+window.button.focus:            parentrelative
+window.button.focus.picColor:   #00FF00
+window.button.unfocus:          parentrelative
+window.button.unfocus.picColor: #f3f3f3
+window.button.pressed:          flat 
+window.button.pressed.color:    #141119
+
+window.handle.focus:            flat 
+window.handle.focus.color:      #00FF00
+window.handle.unfocus:          flat
+window.handle.unfocus.color:    #141119
+
+window.grip.focus:              parentrelative
+window.grip.unfocus:            parentrelative
+
+window.frame.focusColor:        #00FF00
+window.frame.unfocusColor:      #141119
+
+window.font:                    monospace-regular-10
+window.justify:                 left
+
+borderColor:                    #322b36
+
+bevelWidth:                     1
+borderWidth:                    1
+handleWidth:                    4
+
+*textColor:                     #f3f3f3
+*Font:                          monospace-regular-10
+
+background: flat
+background.color: rgb:#141119 
+
+bbpager.desktop.focus:          flat interlaced 
+bbpager.desktop.focus.color:    #00FF00

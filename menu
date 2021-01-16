@@ -1,0 +1,25 @@
+# This is an automatically generated file.
+# Please see <file:/usr/share/doc/menu/README> for information.
+
+# to use your own menu, copy this to ~/.fluxbox/menu, then edit
+# ~/.fluxbox/init and change the session.menuFile path to ~/.fluxbox/menu
+
+[begin] (Phantom)
+
+[exec] (Terminal) {guake --show}
+[exec] (Internet) {firefox}
+[separator]
+[submenu] (Coding)
+	[exec] (TextEditor) {atom}	
+	[exec] (Terminal) {guake}
+[end]
+
+[include] (~/.fluxbox/folders_menu.txt) #Automatic File Loader
+
+[stylesmenu] (fluxbox Styles) {/usr/share/fluxbox/styles}
+     
+[separator]
+[restart] (Refresh)
+[exit] (Exit)
+
+[end]
