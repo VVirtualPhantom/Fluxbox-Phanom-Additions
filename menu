@@ -15,8 +15,6 @@
 [end]
 
 [include] (~/.fluxbox/folders_menu.txt) #Automatic File Loader
-
-[stylesmenu] (fluxbox Styles) {/usr/share/fluxbox/styles}
      
 [separator]
 [restart] (Refresh)
