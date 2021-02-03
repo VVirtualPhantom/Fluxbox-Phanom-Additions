@@ -1,6 +1,13 @@
 #! /bin/bash
 #LOAD AT BOOT TO KEEP UPDATED
 
+####################################################
+## File Capture
+## version 2.0
+## version date: 15/01/2021
+## By : VVirtualPhantom
+####################################################
+
 ##################################
 #Scans folder supplied and stores everything in it as non operational names
 #whilst also expanding to any folders within to show whole folder structure
