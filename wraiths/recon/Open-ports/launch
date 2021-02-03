@@ -1,0 +1,179 @@
+#! /bin/bash
+############################################
+# Open-Port-scanner
+# Version: 1.0
+# Version Date: 17/01/2021
+# Creator : vvirtualphantom
+############################################
+# Dependencies:
+# nmap
+############################################
+
+##Default saving paramaters -can be adjusted
+ID=($(who)) ##REMOVE IF USING CUSTOM PATH
+savePath=/home/$ID/Documents
+
+
+if [[ $EUID -ne 0 ]]
+then
+  echo "This script must be run as root."
+  exit
+fi
+
+arguments(){
+
+saveName=
+
+##make sure there is an input thats not null
+if [[ -z $1 ]]
+then
+    echo "No address range selected"
+    exit
+fi
+
+## checks through all possible arguments
+while [ ! -z $1 ]
+do
+
+  case  $1 in
+                  "-h"|"--help") ##Help
+                     cat ./HELP.txt
+                     exit
+                      ;;
+                  "-t"|"--time") ##Time limit per active ip
+                     timeLimit="--host-timeout $2"
+         		         echo "Will run open port scan for $2"
+                     shift
+                      ;;
+                  "-n"|"--name") ##folder name
+                     saveName=$2
+            	       echo "saving file as $2"
+                     shift
+                      ;;
+                  *) ##if no arguments set as target ip
+                    ip=$1
+            esac
+            shift
+done
+
+##Make sure there is an actual ip
+if [[ -z $ip ]]
+then
+    echo "No address range selected"
+    exit
+fi
+
+echo "launching open port scanner on $ip"
+
+##if there is no asigned name will default to searched IP's
+if [[ -z $saveName ]]
+then
+  saveName=SCAN_$ip
+fi
+savelocation="$savePath/$saveName"
+
+}
+
+##scan for any arguments
+arguments $1 $2 $3 $4 $5 $6 $7
+mkdir $savelocation
+
+##Gets list of ips that are up
+declare -a active=($(nmap $timeLimit -sn -oG - -v $ip | grep Up | awk -F ' ' '{print $2}' ))
+#~/Documents/LoadingBar false &
+echo "Located active ips"
+
+#############################################
+## Print active ip's in a active file
+#############################################
+
+##stores list of active ips in file
+echo -e "###Active Ips:###\n" > $savelocation/Active.txt
+  for ip in ${active[@]}
+  do
+    echo $ip >> $savelocation/Active.txt
+  done
+
+cat $savelocation/Active.txt
+
+#############################################
+## scan 350 most common ports for all active ip's
+#############################################
+
+echo -e "\nLocating open ports"
+sleep 5
+##finds all open ports on active ips
+  declare -a open=($(nmap $timeLimit -sS -vv --top-ports 350 -iL $savelocation/Active.txt | grep 'open port' | awk '{print $4"/"$6}' ))
+echo "Located open ports"
+
+
+#############################################
+## Print open ports in open port file
+#############################################
+
+##stores list of open ports per ip in file
+echo -e "\n###OpenPorts:###" > $savelocation/openPorts.txt
+
+## prints all the open ports per IP
+for ip in ${active[@]}
+do
+  echo -e "\nOpen ports on - $ip:" >> $savelocation/openPorts.txt
+  for port in ${open[@]}
+  do
+    echo $port | grep $ip | awk -F '/' '{print $1}' >> $savelocation/openPorts.txt
+  done
+done
+
+cat $savelocation/openPorts.txt
+
+#############################################
+## compiles all open ports in a list
+#############################################
+
+portList=(0)
+  for port in ${open[@]}
+  do
+
+    ##gets the port number for processing
+    portnumber=($(echo $port | awk -F '/' '{print $1}'))
+
+      add=false
+
+      ##check if curent port number has already been found
+      for found in ${portList[@]}
+      do
+        if [[ $portnumber == $found ]]
+        then
+          add=false
+          break
+        else
+          add=true
+        fi
+      done
+
+      ##adds the port number to the list if its not already in it
+      if [[ $add == true ]]
+      then
+        #echo "$portnumber added to open ports" ##DEBUG
+        portList+=($portnumber)
+      fi
+
+    done
+
+scanPorts=
+echo -e "\nSearching on open ports:"
+for port in ${portList[@]}
+do
+  if [[ -z $scanPorts ]]
+  then
+    scanPorts="$port"
+  else
+    scanPorts="${scanPorts},$port"
+  fi
+done
+echo $scanPorts
+
+##DO SOMETHING WITH all active[*] on all open portlist[*]
+##E.G. VULN scan
+
+nmap -sS -vv -A --script vuln -p $scanPorts -iL $savelocation/Active.txt | grep "|\|open\|scanning" | grep -v "Discovered" > $savelocation/vulnerabilities.txt
