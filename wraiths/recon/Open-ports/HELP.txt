@@ -1,0 +1,74 @@
+__________________________________________________________________
+Terminal Commands for dummies :)
+__________________________________________________________________
+
+--help  - following command for help, duh e.g. cp --help
+man  - manual for command e.g. man cp
+
+sudo - super user do (basically run as admin/root)
+
+__________________________________________________________________
+./ - start exectuable
+	[./filename] =launch file
+	
+cd - change directory 
+	[cd ..] = previous folder)
+	
+ls - list (like HTML)
+	[ls /folder/] =search specific folder
+	[ls -l] =long listing (users, permissions, etc.)
+	[ls -la] =show hidden files
+	
+pwd - print working directory 
+	(/) = root directory
+	
+cp - copy
+	[cp fileToCopy.run /LocationToCopyTo/] 
+	[cp -v fileToCopy] =shows progress bar
+	
+mv - move
+	[mv FileToMove.run /LocationToCopyTo/]
+	[mv FileToMove.run NewName.run] =renames file in location
+	
+cat - display file content
+	[cat FileName.run] =display file content in text dump
+	
+less - Display file content in issolated display
+	[less FileName.run] =display file content in text dump that doesnt clutter display
+	
+nano - Enter Text Editor
+	[nano FileName.run] =Open file in terminal text editor
+	
+grep - Keyword lookup
+	[cat FileName.run | grep keyword] = only outputs lines with keyword in them
+
+awk - automatic line editor?
+	-F "[...]" = seperator (splits line into seperate strings based on whats inside the "")
+	'{print $[1]}' = prints the field defined by the $
+	e.g.
+	... | awk -F " " '{print $2}' = seperates line into array of strings based based on the spaces, 			  then prints the second string in the array
+	### $0 DISPLAYS FULL LINE ###
+
+echo - echos the text specified
+	[echo "Text"] = echo onto next line
+	[echo "Text" > FileName] =replaces file with text
+
+touch - quick way to make files
+	[touch FileName ...] =Add multiple files into current location
+
+mkdir - make directory
+	[mkdir DirectoryName] =Add directory into current location
+
+chown - change ownership
+	[chown UserName:UserGroup FileName] = change owner of file to specified user
+
+chmod - change file permissions
+	[chmod 	+x 	FileName] = makes file an exectuable
+		[+w] = writeable
+		[+r] = readable
+		[+x] = executable
+			[777] = global mode / everyone can use
+
+rm - remove (NEAR IMPOSIBLE TO RECOVER REMOVED FILES)
+   - Cannot remove whole directories
+	[rm -r DirectoryName] =remove whole folder/directory
