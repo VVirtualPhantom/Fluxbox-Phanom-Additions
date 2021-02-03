@@ -1,4 +1,4 @@
-#! binbash
+#! /bin/bash
 #LOAD AT BOOT TO KEEP UPDATED
 
 ####################################################
