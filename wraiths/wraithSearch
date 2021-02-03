@@ -1,4 +1,5 @@
 #! /bin/bash
+
 #LOAD AT BOOT TO KEEP UPDATED
 
 ####################################################
@@ -19,7 +20,7 @@ FolderScanner(){
 #Find the working directory
 	currentDirectory=$1
 	declare -a wraithList=($(ls $currentDirectory))
-	declare -a folderList=($(ls -d $currentDirectory  awk -F $currentDirectory '{print $2}'  awk -F  '{print $1}'))
+	declare -a folderList=($(ls -d $currentDirectory/*/ | awk -F "$currentDirectory/" '{print $2}' | awk -F "/" '{print $1}'))
 	directoryCheck=false
 
 	for file in ${wraithList[@]}
@@ -30,11 +31,11 @@ FolderScanner(){
 			#check which files are directories
 			if [[ $file == $folder ]]
 			then
-			echo FolderMatch
+			echo "FolderMatch"
 			directoryCheck=true
 			break
 			else
-			echo noMatch
+			echo "noMatch"
 			directoryCheck=false
 			fi
 
@@ -44,18 +45,22 @@ FolderScanner(){
 		#opens directories as new submenus
 		if [ $directoryCheck = true ]
 		then
-		echo [submenu] (${file})  wraithsmenuDisplay.txt
-		newFolder=$currentDirectory$file
-		FolderScanner $newFolder
-		echo [end]  wraithsmenuDisplay.txt
+			echo "directory found"
+			echo "[submenu] (${file})" >> /wraiths/menuDisplay.txt
+			newFolder="$currentDirectory/$file"
+			FolderScanner $newFolder
+			echo "[end]" >> /wraiths/menuDisplay.txt
+		elif [[ $file == "launch" ]]
+		then
+			echo "[exec] (Launch) {guake --show -n '$file' -e 'sudo $currentDirectory/$file'}" >> /wraiths/menuDisplay.txt	
 		else
-		echo [nop] (${file})  wraithsmenuDisplay.txt
+			echo "[nop] (${file})" >> /wraiths/menuDisplay.txt
 		fi
 	done
 
 	if [ -z $wraithList ]
 	then
-	echo [nop] (No Wraiths)  wraithsmenuDisplay.txt
+	echo "[nop] (No Wraiths)" >> /wraiths/menuDisplay.txt
         fi
 }
 
@@ -64,21 +69,21 @@ FolderScanner(){
 #set up main files to search in
 ##############################
 
-echo [submenu] (Wraiths) {}  wraithsmenuDisplay.txt
-echo [exec] (Update) {wraithswraithSearch &}  wraithsmenuDisplay.txt
-echo [submenu] (Offensive) {wraithsoffensive}  wraithsmenuDisplay.txt
+echo "[submenu] (Wraiths) {}" >  /wraiths/menuDisplay.txt
+echo "[exec] (Update) {/wraiths/wraithSearch &}" >> /wraiths/menuDisplay.txt
+echo "[submenu] (Offensive) {/wraiths/offensive}" >> /wraiths/menuDisplay.txt
 
-FolderScanner wraithsoffensive
+FolderScanner /wraiths/offensive
 
-echo [end]  wraithsmenuDisplay.txt
-echo [submenu] (Recon) {wraithsrecon}  wraithsmenuDisplay.txt
+echo "[end]" >> /wraiths/menuDisplay.txt
+echo "[submenu] (Recon) {/wraiths/recon}" >> /wraiths/menuDisplay.txt
 
-FolderScanner wraithsrecon
+FolderScanner /wraiths/recon
 
-echo [end]  wraithsmenuDisplay.txt
-echo [submenu] (Passive) {wraithspassive}  wraithsmenuDisplay.txt
+echo "[end]" >> /wraiths/menuDisplay.txt
+echo ["submenu] (Passive) {/wraiths/passive}" >> /wraiths/menuDisplay.txt
 
-FolderScanner wraithspassive
+FolderScanner /wraiths/passive
 
-echo [end]  wraithsmenuDisplay.txt
-echo [end]  wraithsmenuDisplay.txt
+echo "[end]" >> /wraiths/menuDisplay.txt
+echo "[end]" >> /wraiths/menuDisplay.txt
