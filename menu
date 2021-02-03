@@ -1,3 +1,10 @@
+####################################################
+## Phantom Menu
+## version 3.0
+## version date: 03/02/2021
+## By : VVirtualPhantom
+####################################################
+
 # This is an automatically generated file.
 # Please see <file:/usr/share/doc/menu/README> for information.
 
@@ -6,10 +13,14 @@
 
 [begin] (Phantom)
 
+[include] (/wraiths/menuDisplay.txt) #wraith displayer
+[separator]
+
 [exec] (Terminal) {guake --show}
 [exec] (Internet) {firefox}
 [separator]
 [submenu] (Coding)
+	[exec] (Notepad) {gedit}
 	[exec] (TextEditor) {atom}	
 	[exec] (Terminal) {guake}
 [end]
@@ -17,6 +28,9 @@
 [include] (~/.fluxbox/folders_menu.txt) #Automatic File Loader
      
 [separator]
+[submenu] (Styles)
+[stylesmenu] {~/.fluxbox/styles}
+[end]
 [restart] (Refresh)
 [exit] (Exit)
 
