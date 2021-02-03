@@ -1,0 +1,12 @@
+[submenu] (Wraiths) {}
+[exec] (Update) {guake -e '/wraiths/wraithSearch &'}
+[submenu] (Offensive) {/wraiths/offensive/}
+[nop] (No Wraiths)
+[end]
+[submenu] (Recon) {/wraiths/recon/}
+[nop] (No Wraiths)
+[end]
+[submenu] (Passive) {/wraiths/passive/}
+[nop] (No Wraiths)
+[end]
+[end]

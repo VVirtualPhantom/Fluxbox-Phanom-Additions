@@ -1,0 +1,84 @@
+#! binbash
+#LOAD AT BOOT TO KEEP UPDATED
+
+####################################################
+## Wraiths System
+## version 1.0
+## version date: 03/01/2021
+## By : VVirtualPhantom
+####################################################
+
+##################################
+#Scans folder supplied and stores everything in it as non operational names
+#whilst also expanding to any folders within to show whole folder structure
+##################################
+
+
+FolderScanner(){
+
+#Find the working directory
+	currentDirectory=$1
+	declare -a wraithList=($(ls $currentDirectory))
+	declare -a folderList=($(ls -d $currentDirectory  awk -F $currentDirectory '{print $2}'  awk -F  '{print $1}'))
+	directoryCheck=false
+
+	for file in ${wraithList[@]}
+	do
+		echo $file
+		for folder in ${folderList[@]}
+		do
+			#check which files are directories
+			if [[ $file == $folder ]]
+			then
+			echo FolderMatch
+			directoryCheck=true
+			break
+			else
+			echo noMatch
+			directoryCheck=false
+			fi
+
+		echo $directoryCheck
+		done
+
+		#opens directories as new submenus
+		if [ $directoryCheck = true ]
+		then
+		echo [submenu] (${file})  wraithsmenuDisplay.txt
+		newFolder=$currentDirectory$file
+		FolderScanner $newFolder
+		echo [end]  wraithsmenuDisplay.txt
+		else
+		echo [nop] (${file})  wraithsmenuDisplay.txt
+		fi
+	done
+
+	if [ -z $wraithList ]
+	then
+	echo [nop] (No Wraiths)  wraithsmenuDisplay.txt
+        fi
+}
+
+
+##############################
+#set up main files to search in
+##############################
+
+echo [submenu] (Wraiths) {}  wraithsmenuDisplay.txt
+echo [exec] (Update) {wraithswraithSearch &}  wraithsmenuDisplay.txt
+echo [submenu] (Offensive) {wraithsoffensive}  wraithsmenuDisplay.txt
+
+FolderScanner wraithsoffensive
+
+echo [end]  wraithsmenuDisplay.txt
+echo [submenu] (Recon) {wraithsrecon}  wraithsmenuDisplay.txt
+
+FolderScanner wraithsrecon
+
+echo [end]  wraithsmenuDisplay.txt
+echo [submenu] (Passive) {wraithspassive}  wraithsmenuDisplay.txt
+
+FolderScanner wraithspassive
+
+echo [end]  wraithsmenuDisplay.txt
+echo [end]  wraithsmenuDisplay.txt
